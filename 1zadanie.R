@@ -8,6 +8,7 @@ library(rnoaa)
 station_data=ghcnd_stations()
 write.csv(station_data,"station_data.csv")
 station_data = read.csv("station_data.csv")
+#формирование спаиска метеостанций
 ulyanovsk=data_frame(id="ulyanovsk",latitude = 54.32824,  longitude = 48.38657)
 ulyanovsk_around=meteo_nearby_stations(lat_lon_df = ulyanovsk, station_data = station_data, limit = 20, var = c("PRCP", "TAVG"), year_min = 1994, year_max = 2003)
 ulyanovsk_id=ulyanovsk_around[["ulyanovsk"]][["id"]][1]
@@ -17,3 +18,6 @@ summary(ulyanovsk_table)
 ulyanovsk_stations=ulyanovsk_table[ulyanovsk_table$ulyanovsk.distance > 70 & ulyanovsk_table$ulyanovsk.distance < 210]
 str(ulyanovsk_stations)
 ulyanovsk_stations$ulyanovsk.id
+#скачивание погодных данных для выбранных метеостанций
+all_ulyanovsk_data=meteo_tidy_ghcnd(stationid = ulyanovsk_id)
+summary(all_ulyanovsk_data)
